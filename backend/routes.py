@@ -60,3 +60,17 @@ def health():
 def count():
     count = db.songs.count_documents({})
     return {"count": count}, 200
+
+@app.route("/song", methods=["GET"])
+def songs():
+    songs = list(db.songs.find({}))
+    return {"songs": parse_json(songs)}, 200
+
+@app.route("/song/<int:id>", methods=["GET"])
+def get_song_by_id(id: int):
+    song = db.songs.find_one({"id": id})
+    print(song)
+    if (song):
+        return {"song": parse_json(song)}, 200
+    else:
+        return {"message": "song with id not found"}, 404
