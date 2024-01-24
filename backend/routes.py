@@ -63,8 +63,10 @@ def count():
 
 @app.route("/song", methods=["GET"])
 def songs():
-    songs = list(db.songs.find({}))
-    return {"songs": parse_json(songs)}, 200
+    get_all_songs: list = list(db.songs.find({}))  # Find all songs
+    # parse_json needed, else 500 error
+    response: tuple = {"songs": parse_json(get_all_songs)}, 200
+    return response
 
 @app.route("/song/<int:id>", methods=["GET"])
 def get_song_by_id(id: int):
